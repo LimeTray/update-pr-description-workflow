@@ -1,5 +1,9 @@
 const github = require('@actions/github');
 const core = require('@actions/core');
+const path = require('path');
+const fs = require('fs');
+const prSampleFile = path.join(__dirname, "pr-sample.md")
+
 
 const run = async () => {
   const githubToken = core.getInput('github_token', { required: true });
@@ -7,6 +11,16 @@ const run = async () => {
   const prBody = core.getInput('pr_body');
   const baseBranch = core.getInput('destination_branch');
   const sourceBranch = github.context.ref.replace(/^refs\/heads\//, '');
+  const prSampleText = fs.readFileSync(prSampleFile, { encoding: 'utf8', flag: 'r' });
+
+  if (!prTitle || prTitle != '') {
+    // If title not set then set default
+    prTitle = `Pull request for ${sourceBranch}`
+  }
+
+  if (!baseBranch || baseBranch != '') {
+    baseBranch = "master"
+  }
 
   const credentials = {
     owner: github.context.repo.owner,
@@ -45,9 +59,12 @@ const run = async () => {
     params.title = prTitle;
   }
 
-  if (prBody) {
+  if (prBody && prBody != '') {
     core.info(`Pull request #${pullNumber}'s body will be set to "${prBody}"`);
     params.body = prBody;
+  } else {
+    core.info(`Pull request #${pullNumber}'s body will be set to using sample pr file`);
+    params.body = prSampleText;
   }
 
   if (baseBranch && baseBranch !== pullRequestTargetBranch) {

@@ -39,7 +39,7 @@ name: Creates and Updates PR
 on:
   push:
     branches:
-    - master
+    - '.*LIM-\d+'
 jobs:
   pull-request:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
       uses: kt3k/update-pr-description@v2
       with:
         pr_body: ${{ steps.description.outputs.description }}
-        destination_branch: release
+        destination_branch: master
         github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
