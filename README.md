@@ -14,11 +14,11 @@ on:
     - some-branch
 jobs:
   create-pull-request:
-    runs-on: ubuntu-latest
-    continue-on-error: true
+    runs-on: ubuntu-latest    
     steps:
     - uses: actions/checkout@v3
     - name: pull-request
+      continue-on-error: true
       uses: repo-sync/pull-request@v2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
