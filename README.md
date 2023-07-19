@@ -4,63 +4,26 @@ This github action updates the description (and/or title) of the PR by the given
 
 # Usage
 
-This action doesn't create a PR, but updates it. We recommend you should use this github action with [repo-sync/pull-request][]
-
-```yml
-name: Creates and Updates PR
+```yaml
 on:
   push:
     branches:
-    - some-branch
-jobs:
-  create-pull-request:
-    runs-on: ubuntu-latest    
-    steps:
-    - uses: actions/checkout@v3
-    - name: pull-request
-      continue-on-error: true
-      uses: repo-sync/pull-request@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-  update-pull-request:
-    runs-on: ubuntu-latest
-    - name: update-pull-request
-      uses: kt3k/update-pr-description@v2
-      with:
-        pr_body: "**some description**"
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-```
-
-[repo-sync/pull-request][] creates a PR, but the action doesn't update it if the PR already exists. If you need to update the description of the PR on each push, you can use this action for it.
-
-## Our use case
-
-We creates a pull request from `master` to `release` and update the description on each push on `master`. Merging to release branch causes the actual release to the staging environment. So this github workflow works as the release preparation and we can see what is going to be released at the next release by seeing this pull request.
-
-```yml
-name: Creates and Updates PR
-on:
-  push:
-    branches:
-    - '.*LIM-\d+'
+    - LIM-9469 
 jobs:
   pull-request:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: create-description
-      run: "some script for creating PR description from the branch diff"
-      id: description
-    - name: pull-request
-      uses: repo-sync/pull-request@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        destination_branch: release
-        pr_title: Release
+    - uses: actions/checkout@v3    
+    - name: Open Pull Request
+      continue-on-error: true
+      id: open-pr
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh pr create  --title "Automated PR" --body "Automated Body" --base master --head head        
     - name: update-pull-request
-      uses: kt3k/update-pr-description@v2
+      uses: LimeTray/update-pr-description-workflow@master
       with:
-        pr_body: ${{ steps.description.outputs.description }}
         destination_branch: master
         github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
