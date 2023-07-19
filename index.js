@@ -7,11 +7,11 @@ const prSampleFile = path.join(__dirname, "pr-sample.md")
 
 const run = async () => {
   const githubToken = core.getInput('github_token', { required: true });
-  const prTitle = core.getInput('pr_title');
-  const prBody = core.getInput('pr_body');
-  const baseBranch = core.getInput('destination_branch');
-  const sourceBranch = github.context.ref.replace(/^refs\/heads\//, '');
-  const prSampleText = fs.readFileSync(prSampleFile, { encoding: 'utf8', flag: 'r' });
+  let prTitle = core.getInput('pr_title');
+  let prBody = core.getInput('pr_body');
+  let baseBranch = core.getInput('destination_branch');
+  let sourceBranch = github.context.ref.replace(/^refs\/heads\//, '');
+  let prSampleText = fs.readFileSync(prSampleFile, { encoding: 'utf8', flag: 'r' });
 
   if (!prTitle || prTitle != '') {
     // If title not set then set default
