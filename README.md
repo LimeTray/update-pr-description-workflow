@@ -5,10 +5,11 @@ This github action updates the description (and/or title) of the PR by the given
 # Usage
 
 ```yaml
+name: Creates and Updates PR
 on:
   push:
     branches:
-    - LIM-9469 
+    - "*LIM-*"
 jobs:
   pull-request:
     runs-on: ubuntu-latest
@@ -26,6 +27,7 @@ jobs:
       with:
         destination_branch: master
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
 ```
 
 # Parameters
