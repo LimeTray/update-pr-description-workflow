@@ -46,8 +46,13 @@ const run = async () => {
     throw new Error(`No open pull requests found for a source branch "${sourceBranch || '<not found>'}" and a base branch "${baseBranch || '<not specified>'}"`);
   }
 
-  const { number: pullNumber, base: { ref: pullRequestTargetBranch } } = pullRequest;
+  const { number: pullNumber, base: { ref: pullRequestTargetBranch },title } = pullRequest;
   core.info(`Pull request #${pullNumber} has been found for  a source branch "${sourceBranch || '<not found>'}" and a base branch "${baseBranch || '<not specified>'}"`);
+
+  if (prTitle == title) {
+    core.info(`Pull request #${pullNumber}'s title already set to "${prTitle}" hence not updating`);
+    return 'unchanged'
+  }
 
   const params = {
     ...credentials,
@@ -76,14 +81,15 @@ const run = async () => {
 
   core.info(`Making a PATCH request to "${url}" with params "${JSON.stringify(params)}"`);
   await octokit.request(`PATCH ${url}`, params);
+  return 'configured'
 };
 
 // Github boolean inputs are strings https://github.com/actions/runner/issues/1483
 const failOnError = core.getInput('fail_on_error') == 'true';
 
 run()
-  .then(() => {
-    core.info('Done.');
+  .then((action) => {
+    core.info('Done : ' + action);
   })
   .catch((e) => {
     core.error('Cannot update the pull request.');
