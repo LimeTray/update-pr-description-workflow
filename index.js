@@ -49,7 +49,7 @@ const run = async () => {
   const { number: pullNumber, base: { ref: pullRequestTargetBranch },title } = pullRequest;
   core.info(`Pull request #${pullNumber} has been found for  a source branch "${sourceBranch || '<not found>'}" and a base branch "${baseBranch || '<not specified>'}"`);
 
-  if (prTitle == title) {
+  if (title.startsWith(prTitle)) {
     core.info(`Pull request #${pullNumber}'s title already set to "${prTitle}" hence not updating`);
     return 'unchanged'
   }
