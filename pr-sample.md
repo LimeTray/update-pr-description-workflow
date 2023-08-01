@@ -20,8 +20,8 @@ Fixes # (issue)
 - [ ] I have tested integration on UAT or Test Env
 - [ ] I have commented my code and made corresponding changes to the tech documentation
 - [ ] Any dependent changes have been merged and published in downstream modules
-- [ ] I have added DB changes here (If any)
-- [ ] I have reviwed my changes and documented impact on other Infras (If any)  
+- [ ] I have added DB changes here (If None then mark as checked)
+- [ ] I have reviwed my changes and documented impact on other Infras (If None then mark as checked)  
 
 
 ## Code Reviewer Checklist:
