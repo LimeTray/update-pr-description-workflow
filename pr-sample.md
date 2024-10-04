@@ -23,7 +23,7 @@ Fixes # (issue)
 - [ ] Any dependent changes have been merged and published in downstream modules
 - [ ] I have added DB changes here (If None then mark as checked)
 - [ ] I have reviewed my changes and documented impact on other Infras (If None then mark as checked)
-- [ ] I have new tables to chronicles service cron for daily archival (If new table created and has transactional / logging data which need to be archived )
+- [ ] I have added new tables to chronicles service cron for daily archival (If new table created and has transactional / logging data which need to be archived )
 
 
 ## Code Reviewer Checklist:
